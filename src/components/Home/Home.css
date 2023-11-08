@@ -1,0 +1,60 @@
+.marketing_categeroy{
+     /* background-color: white; */
+     padding: 20px;
+}
+.cancel-button{
+     background-color: white;
+     border: 1px solid #456def;
+     color: #2b2e4b;
+     border-radius: 5px;
+     cursor: pointer;
+     padding: 6px 16px;
+     margin: 0px 4px;
+}
+.cancel-buttonB{
+     background-color: #456def;
+     border: 1px solid #456def;
+     color: #ffffff;
+     border-radius: 5px;
+     cursor: pointer;
+     padding: 6px 16px;
+     margin: 0px 4px;
+}
+.continue_button{
+     /* background-color: #456def; */
+     border: 1px solid #456def;
+     color: #ffffff;
+     border-radius: 5px;
+     cursor: pointer;
+     padding: 6px 16px;
+     margin: 0px 4px;
+}
+.continue_button:hover{
+     background-color: #5a7dee;
+}
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+     padding-left: 40px !important;
+     padding-top: 12px !important;
+     padding-bottom: 12px !important;
+}
+.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+     max-height: 400px !important;
+     top:100px !important;
+}
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+     font-size: 12px !important;
+     font-family: 'Montserrat' !important;
+}
+.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root {
+     left: 30px !important;
+     top: -3px !important;
+     font-size: 12px !important;
+     font-family: 'Montserrat' !important;
+}
+.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
+     background-color: rgb(9 64 119 / 41%) !important;
+}
+.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+     max-height: 400px !important;
+     top: 250px !important;
+ }
