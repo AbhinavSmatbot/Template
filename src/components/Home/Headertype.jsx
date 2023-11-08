@@ -104,9 +104,9 @@ const Headertype = (props) => {
                     <div className='relative'>
                          <div className='absolute top-[-17px] right-[16px]'>
                               <Radio
-                                   checked={selectedMediaType === 'location'}
+                                   checked={selectedMediaType === 'locations'}
                                    onClick={changeMediaType}
-                                   value="location"
+                                   value="locations"
                                    name="radio-buttons"
                                    inputProps={{ 'aria-label': 'A' }}
                               />
