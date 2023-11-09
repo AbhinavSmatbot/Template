@@ -81,6 +81,7 @@ const Firstmain = (props) => {
      }
      function closeMarktingCategory(){
           setifmarketingclick(false);
+          setSelectMarkitngType("utility");
      }
 
      const handleChange = (event) => {
@@ -199,7 +200,7 @@ const Firstmain = (props) => {
                                         </div>
                                    }
                               </div>
-                              <div onClick={closeMarktingCategory} className='float-left m-2 p-5 flex flex-row justify-between items-center bg-[#f2f3f9] hover:bg-[#e9ebf5] cursor-pointer rounded-lg'>
+                              <div onClick={closeMarktingCategory} className={` ${selectedCateoryType == 'utility' ? 'bg-[#456def] border-[#456def]' : 'bg-[#f2f3f9]'}float-left m-2 p-5 flex flex-row justify-between items-center hover:bg-[#e9ebf5] cursor-pointer rounded-lg`}>
                                    <div className='p-3 bg-[white] rounded-[50%]'>
                                         <BiSolidBellRing fontSize={"30px"} />
                                    </div>

@@ -5,6 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Headertype from './Headertype';
+import Preview from './Preview';
+import Bodymain from './Bodymain';
 
 const Seconadmain = () => {
      const [headerType, setheaderType] = React.useState('');
@@ -41,11 +43,13 @@ const Seconadmain = () => {
                                              </FormControl>
                                         </div>
                                         {headerType != '' && <Headertype Headertype={headerType}/>}
+                                        
                                    </div>
+                                   <Bodymain/>
 
                               </div>
                               <div className="right-container w-[25%]">
-
+                                  <Preview/>
                               </div>
                          </div>
                     </div>
