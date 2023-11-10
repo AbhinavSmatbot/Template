@@ -1,31 +1,42 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 // import React from 'react';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { Radio } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BsImageFill } from 'react-icons/bs';
 import { MdSlowMotionVideo } from 'react-icons/md';
 import { CgFileDocument } from 'react-icons/cg';
 import { SlLocationPin } from 'react-icons/sl';
 import { GrFormClose } from 'react-icons/gr';
+import { useDispatch, useSelector } from 'react-redux';
+import { upadateHeaderText,upadateHeaderVar,upadateHeaderMedia } from '../../app/features/HeaderSlice';
 
-
-
-
-const Headertype = (props) => {
+const Headertype = () => {
+     const {header_Type,header_text,header_var,header_media} = useSelector(state=>state.header)
+     const dispatch = useDispatch();
      const [headerText, setHeaderText] = useState('');
      const [selectedMediaType, setselectedMediaType] = useState('');
      const [HeaderVarTrue, setHeaderVarTrue] = useState(false);
      const [imageurl, setimageurl] = useState({});
+      
+     useEffect(()=>{
+          console.log("headerType",header_Type);
+          console.log("haderText",header_text);
+          console.log('headerVar',header_var);
+          console.log('header_media',header_media);
+     })
 
      function getHeaderText(event) {
           let text = event.target.value;
           if (headerText.length < 60) {
                setHeaderText(text);
+               dispatch(upadateHeaderText(text)) 
           }
           if (text.includes('{{1}}') && headerText.length < 60) {
                setHeaderVarTrue(true);
+               dispatch(upadateHeaderVar("hello"))
           } else {
                setHeaderVarTrue(false);
           }
@@ -40,6 +51,10 @@ const Headertype = (props) => {
                setselectedMediaType('');
           } else {
                setselectedMediaType(mediaType);
+               // let data = {
+               //      headerMediaType:mediaType
+               // }
+               // dispatch(upadateHeaderMedia(data))
           }
      }
      function addHeadervariable() {
@@ -61,8 +76,10 @@ const Headertype = (props) => {
             setimageurl(
                {name:fileName,
                 size:fileSize,
-                type:fileType
+                type:fileType,
+                headerMediaType:selectedMediaType
                })
+            dispatch(upadateHeaderMedia({name:fileName,size:fileSize,type:fileType,headerMediaType:selectedMediaType}))
             console.log("File Name: " + fileName);
             console.log("File Size: " + fileSize + " bytes");
             console.log("File Type: " + fileType);
@@ -74,10 +91,11 @@ const Headertype = (props) => {
      }
      function removeImage(){
           setimageurl({});
+          setselectedMediaType('');
      }
      return (
           <div className="w-full">
-               {props.Headertype == 'text' ?
+               {header_Type == 'text' ?
                     <div className='w-full float-left mt-3 border border-[#e8f0ff] text-maincolor text-left rounded p-4'>
                          <div className='text-left'>
                               <p className='text-sm font-semibold text-maincolor'>Header</p>

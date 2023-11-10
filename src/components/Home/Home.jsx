@@ -15,6 +15,10 @@ const Home = () => {
     setactiveSecondPage(bool)
     console.log('first_page_Details',firstpageDetails);
   }
+  function BackFisrstHomePage(){
+    setactiveSecondPage(false)
+
+  }
   return (
     <>
       <div className='w-full'>
@@ -26,7 +30,7 @@ const Home = () => {
               </div>
               <div>
                 <Link to=''><button className="p-1 m-1 text-[#465def] cursor-pointer">Help Center?</button></Link>
-                {activeSecondPage && <button className="cancel-buttonB">Back</button>}
+                {activeSecondPage && <button className="cancel-buttonB" onClick={BackFisrstHomePage}>Back</button>}
                 <button className="cancel-button">Cancel</button>
               </div>
             </div>

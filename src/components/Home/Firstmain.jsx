@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+// eslint-disable-next-line react-hooks/exhaustive-deps
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AiTwotoneSound } from 'react-icons/ai';
@@ -14,8 +15,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateCategory,upadateTemName,upadateLanguage } from '../../app/features/HomeSlice';
 // import FormHelperText from '@mui/material/FormHelperText';
-
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -41,29 +43,44 @@ const names = [
   'Kelly Snyder',
 ];
 
-function getStyles(name, language, theme) {
+function getStyles(name, languages, theme) {
      return {
        fontWeight:
-         language.indexOf(name) === -1
+       languages?.indexOf(name) === -1
            ? theme.typography.fontWeightRegular
            : theme.typography.fontWeightMedium,
      };
 }
 
 const Firstmain = (props) => {
+     const {cateory,template_name,languages} = useSelector(state=>state.home)
+     const dispatch = useDispatch();
+     const {templateDetails} = props
      const [ifmarketingClick, setifmarketingclick] = useState(false);
      const [selectedCateoryType, setSelectMarkitngType] = useState('');
-     const [language, setLanguage] = useState([]);
-     const [tamplateName,setTemplateName] = useState('');
+     // const [language, setLanguage] = useState([]);
+     // const [tamplateName,setTemplateName] = useState('');
      const [disabledcontnue,setdisabledcontnue] = useState(false);
      const theme = useTheme();
+     
      useEffect(()=>{
-          if(selectedCateoryType?.length>0 && tamplateName?.length>0 && language?.length>0){
+          if(cateory != 'utility'){
+               setifmarketingclick(true)
+          } 
+          if(languages?.length>0){
+              for(let i of languages){
+               console.log(i)
+               getStyles(i,languages,theme)
+              }
+          } 
+     },[cateory, languages, theme]);
+     useEffect(()=>{
+          if(cateory?.length>0 && template_name?.length>0 && languages?.length>0){
                setdisabledcontnue(true);
           }else{
                setdisabledcontnue(false);  
           }
-     },[selectedCateoryType, tamplateName,language]);
+     },[cateory, languages?.length, selectedCateoryType?.length, template_name?.length])
      const handleChange1 = (event) => {
           // const {
           //      target: { value },
@@ -71,54 +88,61 @@ const Firstmain = (props) => {
           // setLanguage(
           //      typeof value === 'string' ? value.split(',') : value,
           // );
-          setLanguage(event.target.value)
+          // setLanguage(event.target.value)
+          dispatch(upadateLanguage(event.target.value))
+          event.stopPropagation();
      };
     
-     console.log('selected langeuage', language);
+     console.log('selected langeuage', languages);
      
      function openCategory() {
           setifmarketingclick(true);
+          // setSelectMarkitngType("");
      }
      function closeMarktingCategory(){
           setifmarketingclick(false);
           setSelectMarkitngType("utility");
+          dispatch(updateCategory("utility"))
      }
 
      const handleChange = (event) => {
           const selectedValue = event.target.value;
-          if (selectedValue == selectedCateoryType) {
+          if (selectedValue == cateory) {
                setSelectMarkitngType('');
           } else {
                setSelectMarkitngType(selectedValue);
+               dispatch(updateCategory(selectedValue))
           }
      };
 
      function getTemplateName(event){
           let tem_name = event.target.value;
           tem_name = tem_name.toLowerCase();
-          setTemplateName(tem_name);
-          // if(tem_name?.length>0){
-          
-          // }
+          dispatch(upadateTemName(tem_name))
      }
 
      function goSecondPage(e){
           e.preventDefault();
-          if(selectedCateoryType?.length>0 && tamplateName?.length>0 && language?.length>0){
+          if(cateory?.length>0 && template_name?.length>0 && languages?.length>0){
                let obj = {
-                    category_type:selectedCateoryType,
-                    template_name:tamplateName,
-                    language:language
+                    category_type:cateory,
+                    template_name:template_name,
+                    language:languages
                };
-               props.templateDetails(obj,disabledcontnue);
+               templateDetails(obj,disabledcontnue);
 
           }else{
                alert('Please fill all details');
           }
-          console.log('marketing_type',selectedCateoryType);
-          console.log('template_name',tamplateName);
-          console.log('language',language);
+          console.log('marketing_type',cateory);
+          console.log('template_name',template_name);
+          console.log('language',languages);
      }
+     const handleDelete = (itemToDelete) => (event) => {
+          event.stopPropagation(); 
+          // setLanguage((items) => items.filter((item) => item !== itemToDelete));
+          dispatch(upadateLanguage(languages?.filter((item) => item !== itemToDelete)))
+     };
 
 
      return (
@@ -149,7 +173,7 @@ const Firstmain = (props) => {
                                              <div className='float-left flex flex-row justify-between items-center p-1 rounded-md mt-5 ml-5 hover:bg-[#d8dcf0]'>
                                                   <div className='p-1'>
                                                        <Radio
-                                                            checked={selectedCateoryType === 'custom'}
+                                                            checked={cateory === 'custom'}
                                                             onClick={handleChange}
                                                             value="custom"
                                                             name="radio-buttons"
@@ -166,7 +190,7 @@ const Firstmain = (props) => {
                                              <div className='float-left flex flex-row justify-between items-center p-1 rounded-md mt-5 ml-5 hover:bg-[#d8dcf0]'>
                                                   <div className='p-1'>
                                                        <Radio
-                                                            checked={selectedCateoryType === 'form'}
+                                                            checked={cateory === 'form'}
                                                             onClick={handleChange}
                                                             value="form"
                                                             name="radio-buttons"
@@ -183,7 +207,7 @@ const Firstmain = (props) => {
                                              <div className='float-left flex flex-row justify-between items-center p-1 rounded-md mt-5 ml-5 hover:bg-[#d8dcf0]'>
                                                   <div className='p-1'>
                                                        <Radio
-                                                            checked={selectedCateoryType === 'product message'}
+                                                            checked={cateory === 'product message'}
                                                             onClick={handleChange}
                                                             value="product message"
                                                             name="radio-buttons"
@@ -200,7 +224,7 @@ const Firstmain = (props) => {
                                         </div>
                                    }
                               </div>
-                              <div onClick={closeMarktingCategory} className={` ${selectedCateoryType == 'utility' ? 'bg-[#456def] border-[#456def]' : 'bg-[#f2f3f9]'}float-left m-2 p-5 flex flex-row justify-between items-center hover:bg-[#e9ebf5] cursor-pointer rounded-lg`}>
+                              <div onClick={closeMarktingCategory} className={` ${cateory == 'utility' ? 'bg-[#a3b4ee] border-[#456def]' : 'bg-[#f2f3f9]'} float-left m-2 p-5 flex flex-row justify-between items-center hover:bg-[#e9ebf5] cursor-pointer rounded-lg`}>
                                    <div className='p-3 bg-[white] rounded-[50%]'>
                                         <BiSolidBellRing fontSize={"30px"} />
                                    </div>
@@ -231,13 +255,13 @@ const Firstmain = (props) => {
                              {/* <input  */}
                              <form autoComplete="off" className='w-full'>
                                    <FormControl className='w-full text-sm'>
-                                   <OutlinedInput placeholder="Enter message template name..." value={tamplateName} onChange={getTemplateName} className='text-sm h-12 font-Secondary' />
+                                   <OutlinedInput placeholder="Enter message template name..." value={template_name} onChange={getTemplateName} className='text-sm h-12 font-Secondary' />
                                    {/* <MyFormHelperText /> */}
                                    </FormControl>
                               </form>
                               <div className='relative'>
                                    <div className='absolute top-[-30px] right-3'>
-                                       <p className='text-xs font-Secondary'>{tamplateName.length}/50</p>
+                                       <p className='text-xs font-Secondary'>{template_name?.length}/50</p>
                                    </div>
                               </div>
                            </div>
@@ -249,21 +273,31 @@ const Firstmain = (props) => {
                              {/* <input  */}
                              <div>
                                    <FormControl className='w-full text-sm font-Secondary'>
-                                   <InputLabel id="demo-multiple-chip-label">Select languages</InputLabel>
+                                   {languages?.length == 0 && <InputLabel id="demo-multiple-chip-label">Select languages</InputLabel>}
                                    <Select className='min-h-[48px] text-sm'
                                         labelId="demo-multiple-chip-label"
                                         id="demo-multiple-chip"
                                         multiple
-                                        value={language}
+                                        value={languages}
                                         placeholder='Select languages'
                                         onChange={handleChange1}
-                                        input={<OutlinedInput id="select-multiple-chip" placeholder='Select languages' label='Select languages' />}
+                                        input={<OutlinedInput id="select-multiple-chip" placeholder='Select languages' />}
                                         renderValue={(selected) => (
                                              
                                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                           
                                         {selected.map((value) => (
-                                             <Chip key={value} label={value} />
+                                             <Chip key={value} label={value}
+                                             onDelete={(event) => {
+                                                  event.stopPropagation(); // Stop the event propagation to prevent opening the Select
+                                                  handleDelete(value)(event);
+                                                }}
+                                                
+                                                onClick={(event) => event.stopPropagation()} // Stop event propagation on Chip click
+                                                onMouseDown={(event) => event.stopPropagation()} // Stop event propagation on mouse down
+                                                onMouseUp={(event) => event.stopPropagation()} // Stop event propagation on mouse up
+                                             />
+
                                         ))}
                                         
                                         </Box>
@@ -275,14 +309,17 @@ const Firstmain = (props) => {
                                         <MenuItem
                                         key={name}
                                         value={name}
-                                        style={getStyles(name, language, theme)}
+                                        style={getStyles(name, languages, theme)}
                                         >
                                         {name}
                                         </MenuItem>
                                         ))}
                                    </Select>
                                    </FormControl>
-    </div>
+                             </div>
+                             <div>
+
+                             </div>
                               <div className='relative'>
                                    <div className='absolute top-[-33px] left-3'>
                                        <AiOutlineSearch fontSize='20px'/>
