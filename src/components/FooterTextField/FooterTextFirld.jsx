@@ -23,7 +23,7 @@ const FooterTextFirld = () => {
                               <p className='text-sm mt-2 mb-2'>Add a short line of text to the bottom of your message template.</p>
                               <form autoComplete="off" className='w-full'>
                                    <FormControl className='w-full text-sm'>
-                                        <OutlinedInput placeholder="Enter message template name..." value={footer_text} onChange={getFooterText} className='text-sm h-12 font-Secondary' />
+                                        <OutlinedInput placeholder="Enter footer text here..." value={footer_text} onChange={getFooterText} className='text-sm h-12 font-Secondary' />
 
                                    </FormControl>
                               </form>
