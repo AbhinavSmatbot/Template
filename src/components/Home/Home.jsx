@@ -22,7 +22,7 @@ const Home = () => {
   return (
     <>
       <div className='w-full'>
-        <div className="float-left w-[80%] ml-[10%] border border-[#e5e5e5] mt-5 mb-5 rounded">
+        <div className="float-left w-[80%] h-[96vh] ml-[10%] border border-[#e5e5e5] mt-5 mb-5 rounded">
           <div className="w-full">
             <div className="flex flex-row justify-between items-center p-4 border-b border-[#e5e5e5]">
               <div>

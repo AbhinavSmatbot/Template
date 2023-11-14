@@ -2,7 +2,6 @@
 import React from 'react';
 // import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-// import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Headertype from './Headertype';
@@ -11,6 +10,7 @@ import Bodymain from './Bodymain';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateHeaderType } from '../../app/features/HeaderSlice';
 import FooterTextFirld from '../FooterTextField/FooterTextFirld';
+import Custom_buttons from '../Custom_buttons/Custom_buttons';
 
 const Seconadmain = () => {
      const dispatch = useDispatch();
@@ -26,8 +26,8 @@ const Seconadmain = () => {
                <div className="w-full font-Secondary">
                     <div>
                          <div className="flex flex-row justify-center items-center">
-                              <div className="left-container w-[70%]">
-                                   <div className='float-left w-full m-4 border border-[#e8f0ff] text-maincolor text-left rounded p-4'>
+                              <div className="left-container w-[70%] h-[85vh] overflow-y-auto">
+                                   <div className='float-left w-[95%] m-4 border border-[#e8f0ff] text-maincolor text-left rounded p-4'>
                                         <div className='text-left'>
                                              <p className='text-sm font-semibold text-maincolor'>Header <span className='text-xs font-medium bg-[#c7c0c08f] p-1 rounded-md text-[black]'>Optional</span></p>
                                              <p className='text-sm mt-2 mb-2'>Add a title or choose which type of media you will use for this header.</p>
@@ -54,6 +54,7 @@ const Seconadmain = () => {
                                    </div>
                                    <Bodymain/>
                                    <FooterTextFirld/>
+                                   <Custom_buttons/>
 
                               </div>
                               <div className="right-container w-[30%]">

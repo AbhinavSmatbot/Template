@@ -14,7 +14,8 @@ export const BodyAndFooterSlice = createSlice({
       state.body_text = action.payload;
     },
     updateBodyParam:(state,action)=>{
-      state.body_param = action.payload;
+      //state.body_param.push(action.payload)
+       state.body_param = action.payload;
     },
     updateFooterText:(state,action)=>{
       state.footer_text = action.payload;
