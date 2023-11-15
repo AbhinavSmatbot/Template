@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 // import React from 'react';
 
@@ -22,7 +23,7 @@ const Home = () => {
   return (
     <>
       <div className='w-full'>
-        <div className="float-left w-[80%] h-[96vh] ml-[10%] border border-[#e5e5e5] mt-5 mb-5 rounded">
+        <div className="float-left w-[80%] h-[95vh] ml-[10%] border border-[#e5e5e5] mt-5 mb-1 rounded">
           <div className="w-full">
             <div className="flex flex-row justify-between items-center p-4 border-b border-[#e5e5e5]">
               <div>
@@ -38,6 +39,7 @@ const Home = () => {
           <div className="float-left w-full text-center mt-5">
             {!activeSecondPage && <Firstmain templateDetails={goSecondPage} />}
             {activeSecondPage && <Seconadmain/>}
+           
           </div>
           {/* {firstpageDetails && <Seconadmain/>} */}
 

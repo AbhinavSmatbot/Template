@@ -5,7 +5,9 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+     
+    },
     fontFamily: {
       Primary: ["Inter",'sans-serif'],
       Secondary: ["Montserrat",'sans-serif'],

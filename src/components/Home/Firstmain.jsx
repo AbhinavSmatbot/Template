@@ -1,20 +1,14 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-// eslint-disable-next-line react-hooks/exhaustive-deps
+
 import { useEffect, useState } from 'react';
+import {FormControl,OutlinedInput,InputLabel,MenuItem,Select,Chip,Radio} from '@mui/material';
 import { Link } from 'react-router-dom';
 import { AiTwotoneSound } from 'react-icons/ai';
 import { BiSolidBellRing } from 'react-icons/bi';
 import { FaKey } from 'react-icons/fa';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { Radio } from '@mui/material';
-import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import Chip from '@mui/material/Chip';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { updateCategory,upadateTemName,upadateLanguage } from '../../app/features/HomeSlice';
 // import FormHelperText from '@mui/material/FormHelperText';
@@ -43,12 +37,12 @@ const names = [
   'Kelly Snyder',
 ];
 
-function getStyles(name, languages, theme) {
+function getStyles(name, languages) {
      return {
-       fontWeight:
-       languages?.indexOf(name) === -1
-           ? theme.typography.fontWeightRegular
-           : theme.typography.fontWeightMedium,
+     //   fontWeight:
+     //   languages?.indexOf(name) === -1
+     //       ? theme?.typography?.fontWeightRegular
+     //       : theme?.typography?.fontWeightMedium,
      };
 }
 
@@ -61,7 +55,7 @@ const Firstmain = (props) => {
      // const [language, setLanguage] = useState([]);
      // const [tamplateName,setTemplateName] = useState('');
      const [disabledcontnue,setdisabledcontnue] = useState(false);
-     const theme = useTheme();
+     // const theme = useTheme();
      
      useEffect(()=>{
           if(cateory != 'utility'){
@@ -70,10 +64,10 @@ const Firstmain = (props) => {
           if(languages?.length>0){
               for(let i of languages){
                console.log(i)
-               getStyles(i,languages,theme)
+               getStyles(i,languages)
               }
           } 
-     },[cateory, languages, theme]);
+     },[cateory, languages]);
      useEffect(()=>{
           if(cateory?.length>0 && template_name?.length>0 && languages?.length>0){
                setdisabledcontnue(true);
@@ -283,8 +277,7 @@ const Firstmain = (props) => {
                                         onChange={handleChange1}
                                         input={<OutlinedInput id="select-multiple-chip" placeholder='Select languages' />}
                                         renderValue={(selected) => (
-                                             
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                           
                                         {selected.map((value) => (
                                              <Chip key={value} label={value}
@@ -300,7 +293,7 @@ const Firstmain = (props) => {
 
                                         ))}
                                         
-                                        </Box>
+                                        </div>
                                         )}
                                         MenuProps={MenuProps}
                                    >
@@ -309,7 +302,7 @@ const Firstmain = (props) => {
                                         <MenuItem
                                         key={name}
                                         value={name}
-                                        style={getStyles(name, languages, theme)}
+                                        style={getStyles(name, languages)}
                                         >
                                         {name}
                                         </MenuItem>
