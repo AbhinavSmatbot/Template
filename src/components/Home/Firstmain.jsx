@@ -141,7 +141,7 @@ const Firstmain = (props) => {
 
      return (
           <>
-               <div className="float-left w-full">
+               <div className="float-left w-full h-[80vh] overflow-y-auto">
                     <div className="w-full font-Secondary">
                          <div className="select_category_container w-[60%] ml-[20%] border border-[#e8f0ff] text-maincolor float-left text-left rounded p-4">
                               <p className='text-lg text-maincolor font-medium ml-2'>Category</p>
