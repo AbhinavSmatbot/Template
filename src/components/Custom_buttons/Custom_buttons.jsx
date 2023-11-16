@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable no-undef */
@@ -18,6 +19,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { FaPlus } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
+import { IoWarningOutline } from "react-icons/io5";
 
 // const StyledMenu = styled((props) => (
 //      <Menu
@@ -65,6 +67,7 @@ const Custom_buttons = () => {
      const [button_Type, setbuttonType] = useState('');
      const [anchorEl, setAnchorEl] = useState(null);
      const [QuickbuttonArray, setQuickButtonArray] = useState([]);
+     const [disabledMarketingopt,setdisabledMarketingopt] = useState(false);
 
      console.log('button_Type', button_Type);
      const handleClick = (event) => {
@@ -75,14 +78,17 @@ const Custom_buttons = () => {
      };
      const getSelectedButtonType = (type) => {
           setAnchorEl(null);
-          if (QuickbuttonArray?.length < 11) {
+          if (QuickbuttonArray?.length <= 10) {
                console.log('selectedButtonTyep', type)
                setbuttonType(type);
                if (type == 'custom') {
                     setQuickButtonArray([...QuickbuttonArray, { mainType: 'Quick replay', type: type, text: '' }])
                }else if(type == 'marketing opt-out'){
                     setQuickButtonArray([...QuickbuttonArray, { mainType: 'Quick replay', type: type, text:'Stop promotions', footerText:'Not interested? Tap Stop promotions', accept:false}])
+                    setdisabledMarketingopt(true); 
                }
+          }else{
+               alert('yon have cross the limit please delete any button and add new button')
           }
      }
      console.log('buttonArray', QuickbuttonArray);
@@ -93,10 +99,19 @@ const Custom_buttons = () => {
                setQuickButtonArray(newFieldSets);
           }
      };
-     const deleteQuickReplayField = (index) => {
+     const checkedMarktingopt = (index , bool)=>{
+          // console.log('dsds',bool)
+          const newFieldSets = [...QuickbuttonArray];
+          newFieldSets[index] = { ...newFieldSets[index], accept: bool };
+          setQuickButtonArray(newFieldSets);
+     }
+     const deleteQuickReplayField = (index,type) => {
           const newFieldSets = [...QuickbuttonArray];
           newFieldSets.splice(index, 1);
           setQuickButtonArray(newFieldSets);
+          if(type && type == 'marketing opt-out'){
+               setdisabledMarketingopt(false); 
+          }
      };
      return (
           <>
@@ -107,7 +122,6 @@ const Custom_buttons = () => {
                               <p className='text-sm mt-2 mb-2'>Create buttons that let customers respond to your message or take action.</p>
                          </div>
                          <div className='my-3 font-Secondary'>
-
                               <Button className={`!text-xs ${QuickbuttonArray.length == 10 ? "!bg-[lightgray] !cursor-not-allowed" : ''}`}
                                    id="demo-customized-button"
                                    aria-controls={anchorEl ? 'demo-customized-menu' : undefined}
@@ -122,15 +136,12 @@ const Custom_buttons = () => {
                               </Button>
                               <Menu
                                    id="demo-customized-menu"
-                                   // MenuListProps={{
-                                   //      'aria-labelledby': 'demo-customized-button',
-                                   // }}
                                    anchorEl={anchorEl}
                                    open={Boolean(anchorEl)}
                                    onClose={handleClose}
                               >
                                    <p className='p-1 text-left font-Secondary'>Quick reply buttons</p>
-                                   <MenuItem value='marketing opt-out' onClick={() => getSelectedButtonType("marketing opt-out")} disableRipple>
+                                   <MenuItem disabled={disabledMarketingopt} value='marketing opt-out' onClick={() => getSelectedButtonType("marketing opt-out")} disableRipple>
                                         <p className='text-sm font-Secondary'>Marketing opt-out</p>
                                    </MenuItem>
                                    <MenuItem value='custom' onClick={() => getSelectedButtonType("custom")} disableRipple>
@@ -168,7 +179,7 @@ const Custom_buttons = () => {
                                         <div className='flex flex-row justify-center items-center'>
                                         <div className='w-[25%]'>
                                              <label className='text-xs font-Secondary font-medium' htmlFor='outlined-size-small'>Type</label>
-                                             <TextField className="w-full !text-xs !font-Secondary"
+                                             <TextField className="w-full !font-Secondary"
                                                   id="outlined-size-small"
                                                   defaultValue={item.type}
                                                   size="small"
@@ -179,7 +190,7 @@ const Custom_buttons = () => {
                                         </div>
                                         <div className='w-[37%] ml-1'>
                                              <label className='text-xs font-Secondary font-medium' htmlFor='outlined-size-small1'>Button Text</label>
-                                             <TextField className="w-full !text-xs !font-Secondary"
+                                             <TextField className="w-full !font-Secondary"
                                                   id="outlined-size-small1"
                                                   placeholder="Enter your button text"
                                                   size="small"
@@ -191,7 +202,7 @@ const Custom_buttons = () => {
                                         </div>
                                         <div className='w-[37%] ml-1'>
                                              <label className='text-xs font-Secondary font-medium' htmlFor='outlined-size-small1'>Footer Text</label>
-                                             <TextField className="w-full !text-xs !font-Secondary"
+                                             <TextField className="w-full !font-Secondary"
                                                   id="outlined-size-small1"
                                                   placeholder="Enter your button text"
                                                   size="small"
@@ -207,16 +218,18 @@ const Custom_buttons = () => {
                                              </div>
                                         </div> */}
                                         <div className='relative'>
-                                             <div className='absolute top-[-8px] right-[-56px] p-1 cursor-pointer rounded hover:bg-[lightgray]' onClick={() => deleteQuickReplayField(index)}>
+                                             <div className='absolute top-[-8px] right-[-56px] p-1 cursor-pointer rounded hover:bg-[lightgray]' onClick={() => deleteQuickReplayField(index,item.type)}>
                                                   <IoClose fontSize="26px" />
                                              </div>
 
                                         </div>
                                         </div>
-                                         <p>
-                                             <FormControlLabel required control={<Checkbox
-                                             sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }} />}  /> sdfsddsscd
-                                         </p>        
+                                         <div className=' text-[black] flex flex-row justify-start mt-3'>
+                                             <FormControlLabel control={<Checkbox value={item.accept} onChange={(e)=>checkedMarktingopt(index,e.target.checked)}
+                                              style={{fontSize:"28px"}} />}  /> 
+                                             <p className='text-xs font-medium text-[black]'>I understand that it's Smatbot Official's responsibility to stop sending marketing messages to customers who opt out.</p>
+                                         </div>  
+                                         <p className='p-3 mt-2 bg-[#ebc9d9] rounded font-medium text-[black] text-xs'><IoWarningOutline fontSize={"18px"} className="float-left mr-2"/>This box must be ticked to add this button.</p>      
                                         </div>
                                         
                                         }

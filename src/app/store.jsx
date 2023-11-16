@@ -7,7 +7,7 @@ export const store = configureStore({
   reducer: {
      home:HomeSlice,
      header:HeaderSlice,
-     body:BodyAndFooterSlice
+     body:BodyAndFooterSlice,
   }
 
 })
