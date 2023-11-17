@@ -304,7 +304,7 @@ const Firstmain = (props) => {
                              <div>
                                    <FormControl className='w-full text-sm font-Secondary'>
                                    {languages?.length == 0 && <InputLabel id="demo-multiple-chip-label">Select languages</InputLabel>}
-                                   <Select className=' text-sm'
+                                   <Select className='text-sm'
                                         labelId="demo-multiple-chip-label"
                                         id="demo-multiple-chip"
                                         multiple
