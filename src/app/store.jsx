@@ -9,5 +9,4 @@ export const store = configureStore({
      header:HeaderSlice,
      body:BodyAndFooterSlice,
   }
-
 })
