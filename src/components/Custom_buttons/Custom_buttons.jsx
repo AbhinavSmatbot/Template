@@ -15,14 +15,11 @@ import MenuItem from '@mui/material/MenuItem';
 // import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import { FaPlus } from "react-icons/fa6";
-import { IoClose } from "react-icons/io5";
-import { IoWarningOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from 'react-redux';
-import { updateButtonType,upadateButtonArray } from '../../app/features/ButtonsSlice';
+import { updateButtonType, upadateQuickButton_arr, upadateToActionsButton_arr } from '../../app/features/ButtonsSlice';
 import CalltoActionsButton from '../CalltoActions_button/CalltoActionsButton';
+import QuickReplay_button from '../QuickReplay_button/QuickReplay_button';
 
 
 // const StyledMenu = styled((props) => (
@@ -68,16 +65,17 @@ import CalltoActionsButton from '../CalltoActions_button/CalltoActionsButton';
 
 
 const Custom_buttons = () => {
-     const {button_Types,button_array} = useSelector(state=>state.button);
+     const { button_Types, quickReplaybutton_array,callToactionbutton_array } = useSelector(state => state.button);
      const dispatch = useDispatch();
      const [button_Type, setbuttonType] = useState('');
      const [anchorEl, setAnchorEl] = useState(null);
      const [QuickbuttonArray, setQuickButtonArray] = useState([]);
-     const [disabledMarketingopt,setdisabledMarketingopt] = useState(false);
+     const [disabledMarketingopt, setdisabledMarketingopt] = useState(false);
 
      console.log('button_Type', button_Type);
-     console.log('redux_button_type',button_Types);
-     console.log('button_array',button_array);
+     console.log('redux_button_type', button_Types);
+     console.log('Quickbutton_array', quickReplaybutton_array);
+     console.log('calltoactionsbutton_array', callToactionbutton_array);
      const handleClick = (event) => {
           setAnchorEl(event.currentTarget);
      };
@@ -86,220 +84,106 @@ const Custom_buttons = () => {
      };
      const getSelectedButtonType = (type) => {
           setAnchorEl(null);
-          if(type == ('custom' || 'marketing opt-out')){
-               dispatch(updateButtonType('Quick replay'));
-          }else{
+          if (type == ('custom' || 'marketing opt-out')) {
+               dispatch(updateButtonType('quick replay'));
+          } else {
                dispatch(updateButtonType("call to actions"));
           }
           if (QuickbuttonArray?.length <= 10) {
                console.log('selectedButtonTyep', type)
                setbuttonType(type);
                if (type == 'custom') {
-                    setQuickButtonArray([...QuickbuttonArray, { mainType: 'Quick replay', type: type, text: '' }])
-                    dispatch(upadateButtonArray(QuickbuttonArray));
-               }else if(type == 'marketing opt-out'){
-                    setQuickButtonArray([...QuickbuttonArray, { mainType: 'Quick replay', type: type, text:'Stop promotions', footerText:'Not interested? Tap Stop promotions', accept:false}])
-                    setdisabledMarketingopt(true); 
-                    dispatch(upadateButtonArray(QuickbuttonArray));
+                    setQuickButtonArray([...QuickbuttonArray, { mainType: 'quick replay', type: type, text: '' }])
+                    dispatch(upadateQuickButton_arr(QuickbuttonArray));
+               } else if (type == 'marketing opt-out') {
+                    setQuickButtonArray([...QuickbuttonArray, { mainType: 'quick replay', type: type, text: 'Stop promotions', footerText: 'Not interested? Tap Stop promotions', accept: false }])
+                    setdisabledMarketingopt(true);
+                    dispatch(upadateQuickButton_arr(QuickbuttonArray));
+               } else if(type == 'call phone'){
+                    dsfdsf
+               }else if(type == 'visit website'){
+                    let obj = {
+                         mainType:'call to actions',
+                         type:type,
+                         text:'',
+                         visite_type:["static","dynamic"],
+                    }
+                    dispatch(upadateToActionsButton_arr([...callToactionbutton_array,obj]))
+
                }
-          }else{
+          } else {
                alert('yon have cross the limit please delete any button and add new button')
           }
      }
      console.log('buttonArray', QuickbuttonArray);
-     const getQuickReplayButtonTextValue = (index, fieldName, fieldValue) => {
-          if (fieldValue.length <= 25) {
-               const newFieldSets = [...QuickbuttonArray];
-               newFieldSets[index] = { ...newFieldSets[index], [fieldName]: fieldValue };
-               setQuickButtonArray(newFieldSets);
-          }
-     };
-     const checkedMarktingopt = (index , bool)=>{
-          // console.log('dsds',bool)
-          const newFieldSets = [...QuickbuttonArray];
-          newFieldSets[index] = { ...newFieldSets[index], accept: bool };
-          setQuickButtonArray(newFieldSets);
-     }
-     const deleteQuickReplayField = (index,type) => {
-          const newFieldSets = [...QuickbuttonArray];
-          newFieldSets.splice(index, 1);
-          setQuickButtonArray(newFieldSets);
-          if(type && type == 'marketing opt-out'){
-               setdisabledMarketingopt(false); 
-          }
-     };
      return (
           <>
-               <div className='w-full'>
-                    <div className='w-[95%] m-4 text-maincolor text-left rounded pb-6'>
-                         <div className='text-left'>
-                              <p className='text-sm font-semibold text-maincolor'>Buttons <span className='text-xs font-medium bg-[#c7c0c08f] p-1 rounded-md text-[black]'>Optional</span></p>
-                              <p className='text-sm mt-2 mb-2'>Create buttons that let customers respond to your message or take action.</p>
-                         </div>
-                         <div className='my-3 font-Secondary'>
-                              <Button className={`!text-xs ${QuickbuttonArray.length == 10 ? "!bg-[lightgray] !cursor-not-allowed" : ''}`}
-                                   id="demo-customized-button"
-                                   aria-controls={anchorEl ? 'demo-customized-menu' : undefined}
-                                   aria-haspopup="true"
-                                   aria-expanded={anchorEl ? 'true' : undefined}
-                                   variant="contained"
-                                   disableElevation
-                                   onClick={handleClick}
-                                   endIcon={<KeyboardArrowDownIcon />}
-                              >
-                                   <FaPlus className='mr-2' />  Add Button
-                              </Button>
-                              <Menu
-                                   id="demo-customized-menu"
-                                   anchorEl={anchorEl}
-                                   open={Boolean(anchorEl)}
-                                   onClose={handleClose}
-                              >
-                                   <p className='p-1 text-left font-Secondary'>Quick reply buttons</p>
-                                   <MenuItem disabled={disabledMarketingopt} value='marketing opt-out' onClick={() => getSelectedButtonType("marketing opt-out")} disableRipple>
-                                        <p className='text-sm font-Secondary'>Marketing opt-out</p>
-                                   </MenuItem>
-                                   <MenuItem value='custom' onClick={() => getSelectedButtonType("custom")} disableRipple>
-                                        <p className='text-sm font-Secondary'>Custom</p>
-                                   </MenuItem>
-                                   <Divider sx={{ my: 0.5 }} />
-                                   <p className='p-1 text-center font-Secondary'>Call-to-action buttons</p>
-                                   <MenuItem value='call phone' onClick={() => getSelectedButtonType("call phone")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
-                                        <p className='text-sm font-Secondary'>Call phone number</p>
-                                        <p className='text-[11px] font-Secondary'>1 button maximum</p>
-                                   </MenuItem>
-                                   <MenuItem value='visit website' onClick={() => getSelectedButtonType("visit website")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
-                                        <p className='text-sm font-Secondary text-left'>Visit Website</p>
-                                        <p className='text-[11px] font-Secondary text-left'>2 buttons maximum</p>
-                                   </MenuItem>
-                                   <MenuItem value='form' onClick={() => getSelectedButtonType("form")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
-                                        <p className='text-sm font-Secondary'>Complete form</p>
-                                        <p className='text-[11px] font-Secondary'>1 button maximum</p>
-                                   </MenuItem>
-                                   <MenuItem value='copy code' onClick={() => getSelectedButtonType("copy code")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
-                                        <p className='text-sm font-Secondary'>Copy offer code</p>
-                                        <p className='text-[11px] font-Secondary'>1 button maximum</p>
-                                   </MenuItem>
-                              </Menu>
-                              <p className='text-xs font-Secondary mt-1 font-medium'>If you add more than three buttons, they will appear in a list.</p>
-                         </div>
-                          {QuickbuttonArray?.length>0 && 
-                           <div className='w-full float-left mt-3 mb-5 border border-[#e8f0ff] text-maincolor text-left rounded p-4'>
-                           <div className='text-left'>
-                                <p className='text-sm font-semibold text-maincolor'>Quick reply</p>
-                                {QuickbuttonArray?.map((item, index) => (
-                                     <div key={index}>
-                                        {item.type == "marketing opt-out" &&
-                                        <div className='w-[96%] bg-[#efefe857] border border-[#e8f0ff] rounded p-5 my-3'>
-                                        <div className='flex flex-row justify-center items-center'>
-                                        <div className='w-[25%]'>
-                                             <label className='text-xs font-Secondary font-medium' htmlFor='outlined-size-small'>Type</label>
-                                             <TextField className="w-full !font-Secondary"
-                                                  id="outlined-size-small"
-                                                  defaultValue={item.type}
-                                                  size="small"
-                                                  disabled
-                                                  title={item.type}
-                                                  style={{fontFamily:'font-Secondary',fontSize:'10px', fontWeight:'500',color:'black'}}
-                                             />
-                                        </div>
-                                        <div className='w-[37%] ml-1'>
-                                             <label className='text-xs font-Secondary font-medium' htmlFor='outlined-size-small1'>Button Text</label>
-                                             <TextField className="w-full !font-Secondary"
-                                                  id="outlined-size-small1"
-                                                  placeholder="Enter your button text"
-                                                  size="small"
-                                                  value={item.text} 
-                                                  title={item.text}  
-                                                  disabled
-                                                  style={{fontFamily:'font-Secondary',fontSize:'10px', fontWeight:'500',color:'black'}}
-                                             />
-                                        </div>
-                                        <div className='w-[37%] ml-1'>
-                                             <label className='text-xs font-Secondary font-medium' htmlFor='outlined-size-small1'>Footer Text</label>
-                                             <TextField className="w-full !font-Secondary"
-                                                  id="outlined-size-small1"
-                                                  placeholder="Enter your button text"
-                                                  size="small"
-                                                  value={item.footerText}
-                                                  title={item.footerText}  
-                                                  disabled
-                                                  style={{fontFamily:'font-Secondary',fontSize:'10px', fontWeight:'500',color:'black'}}
-                                             />
-                                        </div>
-                                        {/* <div className='relative'>
-                                             <div className='absolute top-[4px] right-2'>
-                                                  <p className='text-xs font-Secondary'>{item.text.length}/25</p>
-                                             </div>
-                                        </div> */}
-                                        <div className='relative'>
-                                             <div className='absolute top-[-8px] right-[-56px] p-1 cursor-pointer rounded hover:bg-[lightgray]' onClick={() => deleteQuickReplayField(index,item.type)}>
-                                                  <IoClose fontSize="26px" />
-                                             </div>
-
-                                        </div>
-                                        </div>
-                                         <div className=' text-[black] flex flex-row justify-start mt-3'>
-                                             <FormControlLabel control={<Checkbox value={item.accept} onChange={(e)=>checkedMarktingopt(index,e.target.checked)}
-                                              style={{fontSize:"28px"}} />}  /> 
-                                             <p className='text-xs font-medium text-[black]'>I understand that it's Smatbot Official's responsibility to stop sending marketing messages to customers who opt out.</p>
-                                         </div>  
-                                         <p className='p-3 mt-2 bg-[#ebc9d9] rounded font-medium text-[black] text-xs'><IoWarningOutline fontSize={"18px"} className="float-left mr-2"/>This box must be ticked to add this button.</p>      
-                                        </div>
-                                        
+               <div>
+                    <div className='w-full'>
+                         <div className='w-[95%] m-4 text-maincolor text-left rounded pb-6'>
+                              <div className='text-left'>
+                                   <p className='text-sm font-semibold text-maincolor'>Buttons <span className='text-xs font-medium bg-[#c7c0c08f] p-1 rounded-md text-[black]'>Optional</span></p>
+                                   <p className='text-sm mt-2 mb-2'>Create buttons that let customers respond to your message or take action.</p>
+                              </div>
+                              <div className='my-3 font-Secondary'>
+                                   <Button className={`!text-xs ${QuickbuttonArray.length == 10 ? "!bg-[lightgray] !cursor-not-allowed" : ''}`}
+                                        id="demo-customized-button"
+                                        aria-controls={anchorEl ? 'demo-customized-menu' : undefined}
+                                        aria-haspopup="true"
+                                        aria-expanded={anchorEl ? 'true' : undefined}
+                                        variant="contained"
+                                        disableElevation
+                                        onClick={handleClick}
+                                        endIcon={<KeyboardArrowDownIcon />}
+                                   >
+                                        <FaPlus className='mr-2' />  Add Button
+                                   </Button>
+                                   <Menu
+                                        id="demo-customized-menu"
+                                        anchorEl={anchorEl}
+                                        open={Boolean(anchorEl)}
+                                        onClose={handleClose}
+                                   >
+                                        <p className='p-1 text-left font-Secondary'>Quick reply buttons</p>
+                                        <MenuItem disabled={disabledMarketingopt} value='marketing opt-out' onClick={() => getSelectedButtonType("marketing opt-out")} disableRipple>
+                                             <p className='text-sm font-Secondary'>Marketing opt-out</p>
+                                        </MenuItem>
+                                        <MenuItem value='custom' onClick={() => getSelectedButtonType("custom")} disableRipple>
+                                             <p className='text-sm font-Secondary'>Custom</p>
+                                        </MenuItem>
+                                        <Divider sx={{ my: 0.5 }} />
+                                        <p className='p-1 text-center font-Secondary'>Call-to-action buttons</p>
+                                        <MenuItem value='call phone' onClick={() => getSelectedButtonType("call phone")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
+                                             <p className='text-sm font-Secondary'>Call phone number</p>
+                                             <p className='text-[11px] font-Secondary'>1 button maximum</p>
+                                        </MenuItem>
+                                        <MenuItem value='visit website' onClick={() => getSelectedButtonType("visit website")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
+                                             <p className='text-sm font-Secondary text-left'>Visit Website</p>
+                                             <p className='text-[11px] font-Secondary text-left'>2 buttons maximum</p>
+                                        </MenuItem>
+                                        <MenuItem value='form' onClick={() => getSelectedButtonType("form")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
+                                             <p className='text-sm font-Secondary'>Complete form</p>
+                                             <p className='text-[11px] font-Secondary'>1 button maximum</p>
+                                        </MenuItem>
+                                        <MenuItem value='copy code' onClick={() => getSelectedButtonType("copy code")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
+                                             <p className='text-sm font-Secondary'>Copy offer code</p>
+                                             <p className='text-[11px] font-Secondary'>1 button maximum</p>
+                                        </MenuItem>
+                                   </Menu>
+                                   <p className='text-xs font-Secondary mt-1 font-medium'>If you add more than three buttons, they will appear in a list.</p>
+                              </div>
+                              {QuickbuttonArray?.length > 0 &&
+                                   <div>
+                                        {button_Types == "call to actions" &&
+                                             <CalltoActionsButton />
                                         }
-                                        {item.type == "custom" && 
-                                         <div  className='w-[96%] bg-[#efefe857] border border-[#e8f0ff] rounded p-5 my-3 flex flex-row justify-center items-center'>
-                                         <div className='w-[35%] mr-1'>
-                                              <label className='text-xs font-Secondary font-medium' htmlFor='outlined-size-small'>Type</label>
-                                              <TextField className="w-full !font-Secondary"
-                                                   id="outlined-size-small"
-                                                   defaultValue={item.type}
-                                                   size="small"
-                                                   disabled
-                                                   style={{fontFamily:'font-Secondary',fontSize:'10px', fontWeight:'500',color:'black'}}
-                                              />
-                                         </div>
-                                         <div className='w-[65%] ml-1'>
-                                              <label className='text-xs font-Secondary font-medium' htmlFor='outlined-size-small1'>Button Text</label>
-                                              <TextField className="w-full !font-Secondary"
-                                                   id="outlined-size-small1"
-                                                   placeholder="Enter your button text"
-                                                   size="small"
-                                                   value={item.text}
-                                                   onChange={(e) => getQuickReplayButtonTextValue(index, 'text', e.target.value)}
-                                                   style={{fontFamily:'font-Secondary',fontSize:'10px', fontWeight:'500',color:'black'}}
-                                              />
-
-                                         </div>
-                                         <div className='relative'>
-                                              <div className='absolute top-[4px] right-2'>
-                                                   <p className='text-xs font-Secondary'>{item.text.length}/25</p>
-                                              </div>
-                                         </div>
-                                         <div className='relative'>
-                                              <div className='absolute top-[-8px] right-[-56px] p-1 cursor-pointer rounded hover:bg-[lightgray]' onClick={() => deleteQuickReplayField(index)}>
-                                                   <IoClose fontSize="26px" />
-                                              </div>
-
-                                         </div>
-                                         </div>
+                                        {button_Types == "quick replay" &&
+                                             <QuickReplay_button/>
                                         }
-                                        
-                                     </div>
-                                ))}
-
-
-                           </div>
-                           </div>
-                          }
-                          {button_Types == "call to actions" && 
-                             <CalltoActionsButton/>
-                          }
-                         
-
+                                   </div>
+                              }
+                         </div>
                     </div>
-
                </div>
           </>
      )

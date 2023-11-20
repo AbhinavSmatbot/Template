@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
      button_Types: '',
      // header_text:'',
-     button_array:[],
+     quickReplaybutton_array:[],
+     callToactionbutton_array:[],
      // header_media:[],
 }
 
@@ -14,12 +15,12 @@ export const ButtonsSlice = createSlice({
     updateButtonType: (state,action) => {
       state.button_Types = action.payload
     },
-    upadateButtonArray: (state,action)=>{
-     state.button_array = action.payload
+    upadateQuickButton_arr: (state,action)=>{
+     state.quickReplaybutton_array = action.payload
     },
-//     upadateHeaderVar: (state,action)=>{
-//      state.header_var = action.payload
-//     },
+    upadateToActionsButton_arr: (state,action)=>{
+     state.callToactionbutton_array = action.payload
+    },
 //     upadateHeaderMedia: (state,action)=>{
 //      state.header_media = action.payload
 //     }
@@ -28,7 +29,7 @@ export const ButtonsSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 // eslint-disable-next-line react-refresh/only-export-components, no-undef
-export const { updateButtonType,upadateButtonArray } = ButtonsSlice.actions
+export const { updateButtonType,upadateQuickButton_arr,upadateToActionsButton_arr } = ButtonsSlice.actions
 
 // eslint-disable-next-line no-undef
 export default ButtonsSlice.reducer
