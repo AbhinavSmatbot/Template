@@ -20,6 +20,10 @@ import Checkbox from '@mui/material/Checkbox';
 import { FaPlus } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import { IoWarningOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from 'react-redux';
+import { updateButtonType,upadateButtonArray } from '../../app/features/ButtonsSlice';
+import CalltoActionsButton from '../CalltoActions_button/CalltoActionsButton';
+
 
 // const StyledMenu = styled((props) => (
 //      <Menu
@@ -64,12 +68,16 @@ import { IoWarningOutline } from "react-icons/io5";
 
 
 const Custom_buttons = () => {
+     const {button_Types,button_array} = useSelector(state=>state.button);
+     const dispatch = useDispatch();
      const [button_Type, setbuttonType] = useState('');
      const [anchorEl, setAnchorEl] = useState(null);
      const [QuickbuttonArray, setQuickButtonArray] = useState([]);
      const [disabledMarketingopt,setdisabledMarketingopt] = useState(false);
 
      console.log('button_Type', button_Type);
+     console.log('redux_button_type',button_Types);
+     console.log('button_array',button_array);
      const handleClick = (event) => {
           setAnchorEl(event.currentTarget);
      };
@@ -78,14 +86,21 @@ const Custom_buttons = () => {
      };
      const getSelectedButtonType = (type) => {
           setAnchorEl(null);
+          if(type == ('custom' || 'marketing opt-out')){
+               dispatch(updateButtonType('Quick replay'));
+          }else{
+               dispatch(updateButtonType("call to actions"));
+          }
           if (QuickbuttonArray?.length <= 10) {
                console.log('selectedButtonTyep', type)
                setbuttonType(type);
                if (type == 'custom') {
                     setQuickButtonArray([...QuickbuttonArray, { mainType: 'Quick replay', type: type, text: '' }])
+                    dispatch(upadateButtonArray(QuickbuttonArray));
                }else if(type == 'marketing opt-out'){
                     setQuickButtonArray([...QuickbuttonArray, { mainType: 'Quick replay', type: type, text:'Stop promotions', footerText:'Not interested? Tap Stop promotions', accept:false}])
                     setdisabledMarketingopt(true); 
+                    dispatch(upadateButtonArray(QuickbuttonArray));
                }
           }else{
                alert('yon have cross the limit please delete any button and add new button')
@@ -276,7 +291,10 @@ const Custom_buttons = () => {
 
 
                            </div>
-                      </div>
+                           </div>
+                          }
+                          {button_Types == "call to actions" && 
+                             <CalltoActionsButton/>
                           }
                          
 
