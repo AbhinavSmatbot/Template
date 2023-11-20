@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
@@ -69,13 +70,77 @@ const Custom_buttons = () => {
      const dispatch = useDispatch();
      const [button_Type, setbuttonType] = useState('');
      const [anchorEl, setAnchorEl] = useState(null);
-     const [QuickbuttonArray, setQuickButtonArray] = useState([]);
+     // const [QuickbuttonArray, setQuickButtonArray] = useState([]);
      const [disabledMarketingopt, setdisabledMarketingopt] = useState(false);
+     const [disabledvisitWebsite, setdisabledvisitWebsite] = useState(false);
+     const [disabledcallPhone, setdisabledcallPhone] = useState(false);
+     const [disabledcompleteForm, setdisabledcompleteForm] = useState(false);
+     const [disabledoffercode, setdisabledoffercode] = useState(false);
+     const [formButtondisabled, setformButtondisabled] = useState(false);
+     const [allButtons,setallButtons] = useState([]);
+     
 
      console.log('button_Type', button_Type);
      console.log('redux_button_type', button_Types);
      console.log('Quickbutton_array', quickReplaybutton_array);
      console.log('calltoactionsbutton_array', callToactionbutton_array);
+     useEffect(()=>{
+          const marketingotp = quickReplaybutton_array.filter(e => {
+               return e.type == "marketing opt-out"     
+          });
+          if(marketingotp?.length>0){
+               setdisabledMarketingopt(true)
+               setdisabledcompleteForm(true)
+          }else{
+               setdisabledMarketingopt(false);
+          }
+          const visitwebsite = callToactionbutton_array.filter(e => {
+                return e.type == 'visit website' ;       
+          });
+          if(visitwebsite?.length>1){
+               setdisabledvisitWebsite(true)
+               setdisabledcompleteForm(true)
+          }else{
+               setdisabledvisitWebsite(false);
+          }
+          const hideCallphone = callToactionbutton_array.filter(e => {
+               return e.type == 'call phone number' ;         
+          });
+          if(hideCallphone?.length>0){
+               setdisabledcallPhone(true);
+               setdisabledcompleteForm(true)
+          }else{
+               setdisabledcallPhone(false);
+          }
+          const hideoffercode = callToactionbutton_array.filter(e => {
+               return e.type == 'copy offer code' ;       
+          });
+          if(hideoffercode?.length>0){
+               setdisabledoffercode(true);
+               setdisabledcompleteForm(true)
+          }else{
+               setdisabledoffercode(false);
+          }
+          const hideoform = callToactionbutton_array.filter(e => {
+               return e.type == 'complete form' ;       
+          });
+          if(hideoform?.length>0){
+               setdisabledoffercode(true);
+               setdisabledcallPhone(true);
+               setdisabledvisitWebsite(true)
+               setdisabledMarketingopt(true)
+               setformButtondisabled(true);
+          }else{
+               setformButtondisabled(false); 
+               // setdisabledcompleteForm(true)
+          }
+
+
+          console.log('maaaa',marketingotp);
+          setallButtons([...quickReplaybutton_array, ...callToactionbutton_array]);
+          
+     },[quickReplaybutton_array,callToactionbutton_array])
+
      const handleClick = (event) => {
           setAnchorEl(event.currentTarget);
      };
@@ -84,38 +149,69 @@ const Custom_buttons = () => {
      };
      const getSelectedButtonType = (type) => {
           setAnchorEl(null);
-          if (type == ('custom' || 'marketing opt-out')) {
+          if (type == 'custom') {
                dispatch(updateButtonType('quick replay'));
-          } else {
+          }else if(type == 'marketing opt-out'){
+               dispatch(updateButtonType('quick replay'));
+          }else {
                dispatch(updateButtonType("call to actions"));
           }
-          if (QuickbuttonArray?.length <= 10) {
+          if (allButtons?.length <= 10) {
                console.log('selectedButtonTyep', type)
                setbuttonType(type);
                if (type == 'custom') {
-                    setQuickButtonArray([...QuickbuttonArray, { mainType: 'quick replay', type: type, text: '' }])
-                    dispatch(upadateQuickButton_arr(QuickbuttonArray));
+                    setdisabledcompleteForm(true)
+                    dispatch(upadateQuickButton_arr([...quickReplaybutton_array, { mainType: 'quick replay', type: type, text: '' }]));
                } else if (type == 'marketing opt-out') {
-                    setQuickButtonArray([...QuickbuttonArray, { mainType: 'quick replay', type: type, text: 'Stop promotions', footerText: 'Not interested? Tap Stop promotions', accept: false }])
                     setdisabledMarketingopt(true);
-                    dispatch(upadateQuickButton_arr(QuickbuttonArray));
-               } else if(type == 'call phone'){
-                    dsfdsf
+                    setdisabledcompleteForm(true)
+                    dispatch(upadateQuickButton_arr([...quickReplaybutton_array, { mainType: 'quick replay', type: type, text: 'Stop promotions', footerText: 'Not interested? Tap Stop promotions', accept: false }]));
+               } else if(type == 'call phone number'){
+                    setdisabledcompleteForm(true)
+                    let obj = {
+                         mainType:'call to actions',
+                         type:"call phone number",
+                         text:'',
+                         country:'+91',
+                         phone:'' 
+                    }
+                    dispatch(upadateToActionsButton_arr([...callToactionbutton_array,obj]))
                }else if(type == 'visit website'){
+                    setdisabledcompleteForm(true)
                     let obj = {
                          mainType:'call to actions',
                          type:type,
                          text:'',
-                         visite_type:["static","dynamic"],
+                         url_type:"static",
+                         url:''
                     }
                     dispatch(upadateToActionsButton_arr([...callToactionbutton_array,obj]))
-
+               }else if(type == 'copy offer code'){
+                    setdisabledcompleteForm(true)
+                    let obj = {
+                         mainType:'call to actions',
+                         type:type,
+                         text:'Copy offer code',
+                         sample_text:'' 
+                    }
+                    dispatch(upadateToActionsButton_arr([...callToactionbutton_array,obj]))
+               }else if(type == "complete form"){
+                    setdisabledcompleteForm(false)
+                    setformButtondisabled(true);
+                    let obj = {
+                         mainType:'call to actions',
+                         type:type,
+                         text:'',
+                         form_type:''
+                    }
+                    dispatch(upadateToActionsButton_arr([...callToactionbutton_array,obj]))
                }
+               setallButtons([...quickReplaybutton_array, ...callToactionbutton_array]);
           } else {
                alert('yon have cross the limit please delete any button and add new button')
           }
      }
-     console.log('buttonArray', QuickbuttonArray);
+     console.log('buttonArray', quickReplaybutton_array);
      return (
           <>
                <div>
@@ -126,7 +222,7 @@ const Custom_buttons = () => {
                                    <p className='text-sm mt-2 mb-2'>Create buttons that let customers respond to your message or take action.</p>
                               </div>
                               <div className='my-3 font-Secondary'>
-                                   <Button className={`!text-xs ${QuickbuttonArray.length == 10 ? "!bg-[lightgray] !cursor-not-allowed" : ''}`}
+                                   <Button disabled={formButtondisabled} className={`!text-xs ${allButtons.length >= 10 ? "!bg-[lightgray] !cursor-not-allowed" : formButtondisabled? '!bg-[lightgray] !cursor-not-allowed' : ''}`}
                                         id="demo-customized-button"
                                         aria-controls={anchorEl ? 'demo-customized-menu' : undefined}
                                         aria-haspopup="true"
@@ -153,33 +249,39 @@ const Custom_buttons = () => {
                                         </MenuItem>
                                         <Divider sx={{ my: 0.5 }} />
                                         <p className='p-1 text-center font-Secondary'>Call-to-action buttons</p>
-                                        <MenuItem value='call phone' onClick={() => getSelectedButtonType("call phone")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
+                                        <MenuItem disabled={disabledcallPhone} value='call phone number' onClick={() => getSelectedButtonType("call phone number")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
                                              <p className='text-sm font-Secondary'>Call phone number</p>
                                              <p className='text-[11px] font-Secondary'>1 button maximum</p>
                                         </MenuItem>
-                                        <MenuItem value='visit website' onClick={() => getSelectedButtonType("visit website")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
+                                        <MenuItem disabled={disabledvisitWebsite} value='visit website' onClick={() => getSelectedButtonType("visit website")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
                                              <p className='text-sm font-Secondary text-left'>Visit Website</p>
                                              <p className='text-[11px] font-Secondary text-left'>2 buttons maximum</p>
                                         </MenuItem>
-                                        <MenuItem value='form' onClick={() => getSelectedButtonType("form")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
+                                        <MenuItem disabled={disabledcompleteForm} value='complete form' onClick={() => getSelectedButtonType("complete form")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
                                              <p className='text-sm font-Secondary'>Complete form</p>
                                              <p className='text-[11px] font-Secondary'>1 button maximum</p>
                                         </MenuItem>
-                                        <MenuItem value='copy code' onClick={() => getSelectedButtonType("copy code")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
+                                        <MenuItem disabled={disabledoffercode} value='copy offer code' onClick={() => getSelectedButtonType("copy offer code")} disableRipple className='text-xs flex flex-col justify-start items-start text-left font-Secondary'>
                                              <p className='text-sm font-Secondary'>Copy offer code</p>
                                              <p className='text-[11px] font-Secondary'>1 button maximum</p>
                                         </MenuItem>
                                    </Menu>
                                    <p className='text-xs font-Secondary mt-1 font-medium'>If you add more than three buttons, they will appear in a list.</p>
                               </div>
-                              {QuickbuttonArray?.length > 0 &&
+                              {allButtons?.length > 0 &&
                                    <div>
-                                        {button_Types == "call to actions" &&
+                                        {/* {button_Types == "call to actions" &&
                                              <CalltoActionsButton />
                                         }
                                         {button_Types == "quick replay" &&
                                              <QuickReplay_button/>
-                                        }
+                                        } */}
+                                       {quickReplaybutton_array?.length>0 &&
+                                       <QuickReplay_button/>
+                                       }
+                                       {callToactionbutton_array?.length>0 &&
+                                        <CalltoActionsButton />
+                                       }
                                    </div>
                               }
                          </div>
