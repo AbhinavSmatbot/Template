@@ -21,6 +21,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateButtonType, upadateQuickButton_arr, upadateToActionsButton_arr } from '../../app/features/ButtonsSlice';
 import CalltoActionsButton from '../CalltoActions_button/CalltoActionsButton';
 import QuickReplay_button from '../QuickReplay_button/QuickReplay_button';
+import FormCategeoryButton from '../FormCategeoryButton/FormCategeoryButton';
+import ProductMarketingButton from '../ProductMarketingHeader/ProductMarketingButton';
 
 
 // const StyledMenu = styled((props) => (
@@ -67,6 +69,8 @@ import QuickReplay_button from '../QuickReplay_button/QuickReplay_button';
 
 const Custom_buttons = () => {
      const { button_Types, quickReplaybutton_array,callToactionbutton_array } = useSelector(state => state.button);
+     const {cateory,template_name,languages} = useSelector(state=>state.home);
+     console.log('categeory type',cateory);
      const dispatch = useDispatch();
      const [button_Type, setbuttonType] = useState('');
      const [anchorEl, setAnchorEl] = useState(null);
@@ -134,8 +138,6 @@ const Custom_buttons = () => {
                setformButtondisabled(false); 
                // setdisabledcompleteForm(true)
           }
-
-
           console.log('maaaa',marketingotp);
           setallButtons([...quickReplaybutton_array, ...callToactionbutton_array]);
           
@@ -216,24 +218,26 @@ const Custom_buttons = () => {
           <>
                <div>
                     <div className='w-full'>
-                         <div className='w-[95%] m-4 text-maincolor text-left rounded pb-6'>
+                         <div className='w-[95%] float-left m-4 text-maincolor text-left rounded pb-6'>
                               <div className='text-left'>
-                                   <p className='text-sm font-semibold text-maincolor'>Buttons <span className='text-xs font-medium bg-[#c7c0c08f] p-1 rounded-md text-[black]'>Optional</span></p>
+                                   <p className='text-sm font-semibold text-maincolor'>Buttons {cateory != "form" && <span className='text-xs font-medium bg-[#c7c0c08f] p-1 rounded-md text-[black]'>Optional</span>}</p>
                                    <p className='text-sm mt-2 mb-2'>Create buttons that let customers respond to your message or take action.</p>
                               </div>
                               <div className='my-3 font-Secondary'>
-                                   <Button disabled={formButtondisabled} className={`!text-xs ${allButtons.length >= 10 ? "!bg-[lightgray] !cursor-not-allowed" : formButtondisabled? '!bg-[lightgray] !cursor-not-allowed' : ''}`}
-                                        id="demo-customized-button"
-                                        aria-controls={anchorEl ? 'demo-customized-menu' : undefined}
-                                        aria-haspopup="true"
-                                        aria-expanded={anchorEl ? 'true' : undefined}
-                                        variant="contained"
-                                        disableElevation
-                                        onClick={handleClick}
-                                        endIcon={<KeyboardArrowDownIcon />}
-                                   >
-                                        <FaPlus className='mr-2' />  Add Button
-                                   </Button>
+                                   {cateory != "form" && 
+                                   <Button disabled={formButtondisabled || cateory == "product message"} className={`!text-xs ${allButtons.length >= 10 ? "!bg-[lightgray] !cursor-not-allowed" : formButtondisabled? '!bg-[lightgray] !cursor-not-allowed' : ''}`}
+                                   id="demo-customized-button"
+                                   aria-controls={anchorEl ? 'demo-customized-menu' : undefined}
+                                   aria-haspopup="true"
+                                   aria-expanded={anchorEl ? 'true' : undefined}
+                                   variant="contained"
+                                   onClick={handleClick}
+                                   endIcon={<KeyboardArrowDownIcon />}
+                                    >
+                                   <FaPlus className='mr-2' />  Add Button
+                                    </Button>
+                                   }
+                                   
                                    <Menu
                                         id="demo-customized-menu"
                                         anchorEl={anchorEl}
@@ -241,9 +245,10 @@ const Custom_buttons = () => {
                                         onClose={handleClose}
                                    >
                                         <p className='p-1 text-left font-Secondary'>Quick reply buttons</p>
-                                        <MenuItem disabled={disabledMarketingopt} value='marketing opt-out' onClick={() => getSelectedButtonType("marketing opt-out")} disableRipple>
+                                        {cateory != 'utility' && <MenuItem disabled={disabledMarketingopt} value='marketing opt-out' onClick={() => getSelectedButtonType("marketing opt-out")} disableRipple>
                                              <p className='text-sm font-Secondary'>Marketing opt-out</p>
-                                        </MenuItem>
+                                        </MenuItem>}
+                                        
                                         <MenuItem value='custom' onClick={() => getSelectedButtonType("custom")} disableRipple>
                                              <p className='text-sm font-Secondary'>Custom</p>
                                         </MenuItem>
@@ -268,7 +273,7 @@ const Custom_buttons = () => {
                                    </Menu>
                                    <p className='text-xs font-Secondary mt-1 font-medium'>If you add more than three buttons, they will appear in a list.</p>
                               </div>
-                              {allButtons?.length > 0 &&
+                              {(allButtons?.length > 0 && cateory != "form") &&
                                    <div>
                                         {/* {button_Types == "call to actions" &&
                                              <CalltoActionsButton />
@@ -283,6 +288,14 @@ const Custom_buttons = () => {
                                         <CalltoActionsButton />
                                        }
                                    </div>
+                              }
+                              {cateory == "form" && 
+                              <div>
+                                   <FormCategeoryButton/>
+                              </div>
+                              }
+                              {cateory == "product message" && 
+                                <ProductMarketingButton/>
                               }
                          </div>
                     </div>

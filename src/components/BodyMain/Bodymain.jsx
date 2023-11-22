@@ -27,14 +27,14 @@ const Bodymain = () => {
         );
      const inputRef = useRef();
      console.log('body_param', body_param)
-     console.log('param',body_text);
-     console.log("paramTexts",paramTexts)
+     // console.log('param',body_text);
+     // console.log("paramTexts",paramTexts)
      // let param_text;
      useEffect(()=>{
           if(bodyPaira?.length>0){
                dispatch(updateBodyParam(bodyPaira));
                const valuesArray = Object.values(paramTexts);
-               console.log('ppppp',valuesArray)
+               // console.log('ppppp',valuesArray)
           }
      },[bodyPaira, dispatch])
      function getbodyText(event) {
@@ -42,7 +42,7 @@ const Bodymain = () => {
           if (body_text.length < 1024) {
                dispatch(updateBodyText(text));
                const valuesArray = Object.values(paramTexts);
-               console.log('ppppp',valuesArray)
+               // console.log('ppppp',valuesArray)
           }
      }
      function addBodyvariable() {
@@ -51,7 +51,7 @@ const Bodymain = () => {
           if (body_text.includes("{{1}}")) {
                dispatch(updateBodyParam([]));
                setbodyPaira([])
-               console.log('adaasasa', body_param);
+               // console.log('adaasasa', body_param);
                let paramLength = body_text.split("{{");
                dispatch(updateBodyText(body_text + ` {{${paramLength.length}}} `));
                console.log('ss', paramLength);
@@ -69,7 +69,7 @@ const Bodymain = () => {
 
                    
                }
-               console.log('body_param', body_param)
+               // console.log('body_param', body_param)
                
 
           } else {
@@ -91,7 +91,7 @@ const Bodymain = () => {
           dispatch(updateBodyParam(bodyPaira))
 
      }
-     console.log('lllop', bodyPaira)
+     // console.log('lllop', bodyPaira)
      function setBoldFont() {
           // setbodyText(bodyText + '**')
           dispatch(updateBodyText(body_text + '**'));

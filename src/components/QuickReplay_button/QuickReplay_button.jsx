@@ -11,7 +11,7 @@ import { updateButtonType, upadateQuickButton_arr, } from '../../app/features/Bu
 
 
 const QuickReplay_button = () => {
-  const { button_Types, quickReplaybutton_array } = useSelector(state => state.button)
+  const { button_Types, quickReplaybutton_array } = useSelector(state => state.button);
   const dispatch = useDispatch();
   console.log('getSelected Vaue', button_Types);
   console.log('all_button', quickReplaybutton_array);

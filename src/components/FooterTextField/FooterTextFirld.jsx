@@ -17,7 +17,7 @@ const FooterTextFirld = () => {
   return (
     <>
     <div className='float-left w-[95%] m-4'>
-    <div className='w-full float-left mt-3 border border-[#e8f0ff] text-maincolor text-left rounded p-4'>
+    <div className='w-full float-left border border-[#e8f0ff] text-maincolor text-left rounded p-4'>
                          <div className='text-left'>
                               <p className='text-sm font-semibold text-maincolor'>Footer<span className='text-xs font-medium bg-[#c7c0c08f] p-1 rounded-md text-[black] ml-1'>Optional</span></p>
                               <p className='text-sm mt-2 mb-2'>Add a short line of text to the bottom of your message template.</p>

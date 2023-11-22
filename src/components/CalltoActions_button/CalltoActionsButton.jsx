@@ -14,10 +14,12 @@ import { updateButtonType,upadateToActionsButton_arr } from '../../app/features/
 import { useState } from 'react';
 
 const CalltoActionsButton = () => {
-     const { button_Types, callToactionbutton_array } = useSelector(state => state.button)
+     const { button_Types, callToactionbutton_array } = useSelector(state => state.button);
+     const {cateory,template_name,languages} = useSelector(state=>state.home)
      // const [urlType, seturlType] = useState("static");
      const dispatch = useDispatch();
-     console.log('getSelected Vaue', button_Types);
+     // console.log('getSelected Vaue', button_Types);
+     console.log('category type',cateory);
      const deleteQuickReplayField = (index,type) => {
           const newFieldSets = [...callToactionbutton_array];
           newFieldSets.splice(index, 1);
@@ -45,7 +47,7 @@ const CalltoActionsButton = () => {
      }
        
         
-     console.log('callToactionbutton',callToactionbutton_array);
+     // console.log('callToactionbutton',callToactionbutton_array);
      return (
           <>
           <div className='w-full float-left mt-3 mb-5 border border-[#e8f0ff] text-maincolor text-left rounded p-4'>
@@ -294,10 +296,15 @@ const CalltoActionsButton = () => {
                                                    style={{fontSize:"12px",width:"100%"}}
                                               >     
                                                   <MenuItem selected value="">Select one</MenuItem>
-                                                   <MenuItem value="event">Register for an event</MenuItem>
-                                                   <MenuItem value="quiz">Complete our quiz</MenuItem>
-                                                   <MenuItem value="preference">Update preference</MenuItem>
-                                                   <MenuItem value="custom">Custom form</MenuItem>
+                                                  {cateory != 'utility' && <MenuItem style={{fontSize:"14px"}} value="revent">Register for an event</MenuItem>}
+                                                  {cateory != 'utility' && <MenuItem style={{fontSize:"14px"}} value="quiz">Complete our quiz</MenuItem>}
+                                                  {cateory != 'utility' && <MenuItem style={{fontSize:"14px"}} value="signup">Complete sign up</MenuItem>}
+                                                  {cateory != 'utility' && <MenuItem style={{fontSize:"14px"}} value="preference">Update preference</MenuItem>}
+                                                  {cateory == 'utility' && <MenuItem style={{fontSize:"14px"}} value="support">Get support</MenuItem>}
+                                                  {cateory == 'utility' && <MenuItem style={{fontSize:"14px"}} value="feedback">Get feedback</MenuItem>}
+                                                  <MenuItem style={{fontSize:"14px"}} value="custom">Custom form</MenuItem>
+                                                   
+                                                   
                                               </Select>
                                               </FormControl>
                                     </div>
