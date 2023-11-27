@@ -2,41 +2,53 @@
 import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateButtonType,upadateToActionsButton_arr } from '../../app/features/ButtonsSlice';
+import { updateFormType,upadateFormButtonText } from '../../app/features/FormSlice';
+import CompleteFormMain from '../CompleteFormModel/CompleteFormMain';
 
 const FormCategeoryButton = () => {
      const { button_Types, callToactionbutton_array } = useSelector(state => state.button);
      const {cateory,template_name,languages} = useSelector(state=>state.home);
+     const {form_Type,button_text} = useSelector(state=>state.form);
      const [text, setbuttontext] = useState('');
      const [formType, setformType] = useState('');
+     const [readytoopenForm ,setreadytoopenForm] = useState(false);
      const dispatch = useDispatch();
-     useEffect(()=>{
-          let obj = {
-               mainType:'call to actions',
-               type:"form",
-               text:text,
-               form_type:formType
-          }
-          // dispatch(upadateToActionsButton_arr([...callToactionbutton_array,obj]))
-     },[text, formType, callToactionbutton_array, dispatch])
+     // useEffect(()=>{
+     //      let obj = {
+     //           mainType:'call to actions',
+     //           type:"form",
+     //           text:text,
+     //           form_type:formType
+     //      }
+     //      // dispatch(upadateToActionsButton_arr([...callToactionbutton_array,obj]))
+     // },[text, formType, callToactionbutton_array, dispatch])
      
      
      function getButtonText(event){
        let buttonText = event.target.value;
        if(buttonText?.length<=20){
           setbuttontext(buttonText);
+          dispatch(upadateFormButtonText(buttonText))
        }
      }
-     const CompleteForm = ()=>{
-
+     function getFormType(event){
+          setformType(event.target.value); 
+          dispatch(updateFormType(event.target.value))
+     }
+     const OpenFormModel = ()=>{
+          if(button_text?.length>2 && form_Type?.length>3){
+            setreadytoopenForm(true);
+          }
      }
      return (
-          <>
-               <div className='w-full float-left mt-3 mb-5 border border-[#e8f0ff] text-maincolor text-left rounded p-4'>
+          <> 
+           <div>
+           <div className='w-full float-left mt-3 mb-5 border border-[#e8f0ff] text-maincolor text-left rounded p-4'>
                     <div className='text-left'>
                          <p className='text-sm font-semibold text-maincolor'>Form button</p>
                          <div className='w-[96%] bg-[#efefe857] border border-[#e8f0ff] rounded px-2 py-5 my-3 flex flex-row justify-start items-center'>
@@ -63,7 +75,7 @@ const FormCategeoryButton = () => {
                                         <Select
                                              id='outlined-size-small11'
                                              value={formType}
-                                             onChange={(e) => setformType(e.target.value)}
+                                             onChange={getFormType}
                                              displayEmpty
                                              inputProps={{ 'aria-label': 'Without label' }}
                                              style={{ fontSize: "12px", width: "100%" }}
@@ -79,24 +91,25 @@ const FormCategeoryButton = () => {
                               </div>
                               <div className='w-[20%]'>
                                    <label className='invisible' htmlFor='demo-customized-button111'>asdas</label>
-                                   <Button className={`${formType == '' ? 'bg-[lightgray] cursor-not-allowed' : ''}`}
+                                   <button className={`${form_Type == '' ? 'bg-[lightgray] cursor-not-allowed' : ''} ${button_text == '' ? 'bg-[lightgray] cursor-not-allowed' : ''} w-full h-[39px] bg-[#456def] rounded text-[14px] cursor-pointer py-2 px-4 text-center text-[white]`}
                                         id="demo-customized-button111"
-                                        aria-haspopup="true"
-                                        variant="contained"
-                                       
-                                        disabled={formType == ''}
-                                        onClick={CompleteForm}
-                                        style={{ textTransform:"none", fontSize:"14px", height: "39px", width: "100%" }}
+                                        disabled={form_Type == '' || button_text == ''}
+                                        onClick={OpenFormModel}
                                    >
                                         Create
-                                   </Button>
+                                   </button>
                               </div>
                               
                               
                          </div>
 
                     </div>
-               </div>
+           </div>
+           {readytoopenForm && 
+             <CompleteFormMain/>
+           }
+          </div>
+               
           </>
      )
 }
