@@ -7,7 +7,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
+import './CompleteFormModel.css';
+import ScreenFormType from './ScreenFormType';
+import EditFormType from './EditFormType';
+import FormPreview from './FormPreview';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -35,8 +39,8 @@ export default function CompleteFormMain() {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Modal title
+        <DialogTitle sx={{ m: 0, p: 2, }} className='!text-sm !font-Secondary text-[black]' id="customized-dialog-title">
+          Create Form
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -51,7 +55,25 @@ export default function CompleteFormMain() {
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>
-          <Typography gutterBottom>
+          <div className='float-left w-full'>
+            <div className='flex flex-row justify-around w-full h-full'>
+              <div className='float-left w-[20%]'>
+                <h1 className='!text-sm !font-Secondary text-[black]'>Screens</h1>
+                 <ScreenFormType/>
+              </div>
+              <div className='float-left w-[50%] border-r border-l border-[#d2d2d3]'>
+                <h1 className='!text-sm !font-Secondary text-[black]'>Edit content</h1>
+                <EditFormType/>
+
+              </div>
+              <div className='float-left w-[30%]'>
+                <h1 className='!text-sm !font-Secondary text-[black]'>Preview</h1>
+                <FormPreview/>
+              </div>
+            </div>
+
+          </div>
+          {/* <Typography gutterBottom>
             Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
             dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
             consectetur ac, vestibulum at eros.
@@ -64,11 +86,14 @@ export default function CompleteFormMain() {
             Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
             magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
             ullamcorper nulla non metus auctor fringilla.
-          </Typography>
+          </Typography> */}
         </DialogContent>
         <DialogActions>
+        <Button onClick={handleClose}>
+            Cancel
+          </Button>
           <Button autoFocus onClick={handleClose}>
-            Save changes
+            Save
           </Button>
         </DialogActions>
       </BootstrapDialog>
