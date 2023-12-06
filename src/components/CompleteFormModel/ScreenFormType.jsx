@@ -32,6 +32,10 @@ const ScreenFormType = () => {
      }
 
   }
+
+  // function clickOnScreen(str){
+  //   setActiveScreen(str);
+  // }
  
   return (
     <>
@@ -39,8 +43,8 @@ const ScreenFormType = () => {
        <div className='float-left w-full'>
         <div className='m-1'>
         {screen?.map((scr,index)=>(
-       <div key={index} className={` ${activeScreen == scr.title?'bg-[#e3dcf0]' : 'bg-[#ffff]'} rounded p-2 w-full hover:bg-[#f9f6ff]`}>
-        <button>{scr.title}</button>
+       <div key={index} className={` ${activeScreen == scr.title?'bg-[#e3dcf0]' : 'bg-[#ffff]'} !font-Secondary rounded p-2 w-full hover:bg-[#f9f6ff]`}>
+        <button onClick={()=>setActiveScreen(scr.title)}>{scr.title}</button>
        </div>
   )) 
        }
@@ -48,19 +52,22 @@ const ScreenFormType = () => {
         <div className='float-left w-full'>
           <div className='m-1'>
           {/* <button className='w-full flex items-center text-[#456def] rounded p-2 hover:bg-[#f9f6ff]' onClick={addAnotherScreen}><FaPlus className='mr-2' />Add New</button> */}
-          <Accordion expanded={expanded} onChange={() => setExpanded((prev) => !prev)} className={` ${!expanded?'bg-[#ffffff]':'!bg-[#d6ddec] border border-[#d6ddec]'} !shadow-none float-left w-full rounded font-Secondary text-xs`}>
+          <Accordion expanded={expanded} onChange={() => setExpanded((prev) => !prev)} className={` ${!expanded?'bg-[#ffffff]':'!bg-[#d6ddec] border border-[#d6ddec]'} !shadow-none float-left w-full !rounded font-Secondary text-xs`}>
         <AccordionSummary
-          className='bg-[#d6ddec] rounded font-Secondary text-xs hover:bg-[#e4e8f1]'
+          className='bg-[#d6ddec] !rounded !font-Secondary text-xs hover:bg-[#e4e8f1]'
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography className='flex items-center'><FaPlus className='mr-2' /> Add New</Typography>
+          <Typography className='flex items-center text-xs !font-Secondary'><FaPlus className='mr-2' /> Add New</Typography>
         </AccordionSummary>
         <AccordionDetails className='bg-[#d6ddec] float-left'>
-          <Typography className='p-1 float-left w-full bg-[#ffffff] rounded'>
+          <Typography className='p-1 float-left w-full bg-[#ffffff] rounded'> 
             <form>
-               <input className='outline-none w-full border h-10 border-[#c7b5ec] rounded pl-1 my-2' type='text' value={screenText} onChange={(e)=>{setscreenText(e.target.value)}}/>
-               <button onClick={addAnotherScreen} className={`${screenText?.length>1?'bg-[#456def] cursor-pointer' : 'bg-[#d8dee8] cursor-not-allowed'} float-right text-[white] py-2 px-3 text-sm font-Secondary font-medium rounded`}>Add</button>
+              <div>
+              <input className='outline-none w-full border h-10 border-[#c7b5ec] rounded pl-1 my-2' type='text' value={screenText} onChange={(e)=>{setscreenText(e.target.value)}}/>
+               <button onClick={addAnotherScreen} className={`${screenText?.length>1?'bg-[#456def] cursor-pointer' : 'bg-[#d8dee8] cursor-not-allowed'} float-right text-[white] py-2 px-3 !text-sm !font-Secondary font-medium rounded`}>Add</button>
+              </div>
+              
             </form>
           </Typography>
         </AccordionDetails>

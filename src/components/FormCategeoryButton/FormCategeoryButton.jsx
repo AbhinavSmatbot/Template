@@ -17,7 +17,12 @@ const FormCategeoryButton = () => {
      const [text, setbuttontext] = useState('');
      const [formType, setformType] = useState('');
      const [readytoopenForm ,setreadytoopenForm] = useState(false);
+     const [open, setOpen] = React.useState(false);
      const dispatch = useDispatch();
+
+      const handleClose = (bool) => {
+       setOpen(false);
+      };
      // useEffect(()=>{
      //      let obj = {
      //           mainType:'call to actions',
@@ -42,6 +47,7 @@ const FormCategeoryButton = () => {
      }
      const OpenFormModel = ()=>{
           if(button_text?.length>2 && form_Type?.length>3){
+            setOpen(true);
             setreadytoopenForm(true);
           }
      }
@@ -106,7 +112,7 @@ const FormCategeoryButton = () => {
                     </div>
            </div>
            {readytoopenForm && 
-             <CompleteFormMain/>
+             <CompleteFormMain close={handleClose} open={open}/>
            }
           </div>
                
